@@ -1,4 +1,3 @@
-import CheckoutButton from "@/components/CheckoutButton";
 import SEO from "@/utils/seo";
 
 const plans = [
@@ -42,7 +41,6 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <CheckoutButton priceId={plan.priceId} />
             </div>
           ))}
         </div>

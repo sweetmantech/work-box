@@ -152,7 +152,7 @@ export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
     <Card className="flex flex-col h-full border-muted shadow-sm">
       <CardContent className="flex-1 overflow-y-auto p-4 pt-6">
         <div className="space-y-6">
-          {messages.map((message, index) => (
+          {messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
