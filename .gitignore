@@ -23,6 +23,8 @@
 # misc
 .DS_Store
 *.pem
+ROADMAP.md
+scratchpad.md
 
 # debug
 npm-debug.log*
