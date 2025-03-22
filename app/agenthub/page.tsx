@@ -40,7 +40,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 const departments = [
   {
     id: "ops",
-    name: "Operations", 
+    name: "Operations",
     icon: Users,
     agents: [
       {
@@ -220,9 +220,9 @@ export default function AgentPicker() {
             </div>
           </header>
 
-          <main className="flex-1  p-4 md:p-6">
+          <main className="flex-1  p-8 md:p-6">
             {!selectedAgent ? (
-              <div className="space-y-6 max-w-7xl mx-auto">
+              <div className="space-y-6 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-8">
                   <h2 className="text-2xl font-bold tracking-tight mb-2">
                     Available Agents
@@ -231,11 +231,11 @@ export default function AgentPicker() {
                     Select an agent to start a conversation or process.
                   </p>
                 </div>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
                   {currentDepartment?.agents.map((agent) => (
                     <Card
                       key={agent.id}
-                      className="cursor-pointer hover:shadow-lg transition-all duration-300 border-muted hover:border-primary/20 overflow-hidden group"
+                      className="w-full cursor-pointer hover:shadow-lg transition-all duration-300 border-muted hover:border-primary/20 overflow-hidden group"
                       onClick={() => handleSelectAgent(agent.id)}
                     >
                       <CardHeader className="pb-2">
