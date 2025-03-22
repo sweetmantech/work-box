@@ -16,8 +16,6 @@ interface ChatInterfaceProps {
 export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // Use Vercel AI SDK's useChat hook
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
       api: "/api/chat",
@@ -25,7 +23,6 @@ export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
         agentId,
         departmentId,
       },
-      // Initialize with welcome message
       initialMessages: [
         {
           id: "welcome",
@@ -35,17 +32,14 @@ export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
       ],
     });
 
-  // Scroll to bottom of chat when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Focus input on mount
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
-  // Format timestamp
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
