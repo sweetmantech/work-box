@@ -35,6 +35,7 @@ export async function POST(req: Request) {
     },
     tools,
     maxSteps: 11,
+    toolCallStreaming: true,
   });
 
   return result.toDataStreamResponse({
