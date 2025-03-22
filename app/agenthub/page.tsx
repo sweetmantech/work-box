@@ -39,8 +39,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 // Define departments and their agents
 const departments = [
   {
-    id: "hr",
-    name: "HR",
+    id: "ops",
+    name: "Operations",
     icon: Users,
     agents: [
       {
@@ -101,7 +101,7 @@ const departments = [
     icon: Clock,
     agents: [
       {
-        id: "contracts",
+        id: "contracts-agent",
         name: "Contract Drafting & Review",
         description:
           "Drafts contract clauses, highlights risks, and ensures compliance.",
@@ -200,12 +200,12 @@ export default function AgentPicker() {
           </SidebarContent>
           <SidebarFooter>
             <div className="px-4 py-3 text-xs text-muted-foreground">
-              © 2025 Your Company
+              © 2025 ALEPH
             </div>
           </SidebarFooter>
         </Sidebar>
 
-        <div className="flex-1 flex flex-col overflow-hidden">
+        <div className={`flex-1 flex flex-col overflow-hidden ${!isMobile && sidebarOpen ? "ml-[var(--sidebar-width)]" : ""}`}>
           <header className="border-b bg-card p-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               {isMobile && <SidebarTrigger className="mr-2" />}
@@ -220,9 +220,9 @@ export default function AgentPicker() {
             </div>
           </header>
 
-          <main className="flex-1 overflow-y-auto p-4 md:p-6">
+          <main className="flex-1  p-8 md:p-6">
             {!selectedAgent ? (
-              <div className="space-y-6 max-w-7xl mx-auto">
+              <div className="space-y-6 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-8">
                   <h2 className="text-2xl font-bold tracking-tight mb-2">
                     Available Agents
@@ -231,11 +231,11 @@ export default function AgentPicker() {
                     Select an agent to start a conversation or process.
                   </p>
                 </div>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
                   {currentDepartment?.agents.map((agent) => (
                     <Card
                       key={agent.id}
-                      className="cursor-pointer hover:shadow-lg transition-all duration-300 border-muted hover:border-primary/20 overflow-hidden group"
+                      className="w-full cursor-pointer hover:shadow-lg transition-all duration-300 border-muted hover:border-primary/20 overflow-hidden group"
                       onClick={() => handleSelectAgent(agent.id)}
                     >
                       <CardHeader className="pb-2">

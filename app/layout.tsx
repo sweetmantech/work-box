@@ -2,7 +2,8 @@ import { type Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { PrivyAuthProvider } from "@/components/providers/privy-provider";
-
+import MiniKitProvider from "@/components/providers/minikit-provider";
+import { ErudaWrapper } from "@/components/providers/eruda-wrapper";
 import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -34,7 +35,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(inter.className, "antialiased")}>
-      <PrivyAuthProvider>{children}</PrivyAuthProvider>
+        <PrivyAuthProvider>
+          <ErudaWrapper>
+            <MiniKitProvider>
+              {children}
+            </MiniKitProvider>
+          </ErudaWrapper>
+        </PrivyAuthProvider>
       </body>
     </html>
   );
