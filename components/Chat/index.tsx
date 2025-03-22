@@ -29,7 +29,9 @@ interface ChatMessage {
 export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
   const { messages, input, handleInputChange, handleSubmit, isLoading, error } =
+
     useChat({
       api: "/api/chat",
       body: {
@@ -52,6 +54,7 @@ export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
 
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -88,6 +91,7 @@ export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
           return null;
       }
     });
+
   };
 
   return (
