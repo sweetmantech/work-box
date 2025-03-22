@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
+import { signInWithWallet } from "@/components/ConnectWorldButton";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,7 +16,9 @@ export default function Navbar() {
 
   const handleLogin = () => {
     if (ready && !authenticated) {
-      login();
+   
+
+      signInWithWallet();
     }
   };
 
@@ -147,8 +150,8 @@ export default function Navbar() {
           </Link>
             <button
               onClick={() => {
-                handleLogin();
-                toggleMenu();
+                signInWithWallet();
+                /* toggleMenu(); */
               }}
               className="w-full text-left block rounded-md px-3 py-2 text-base font-medium text-white/90 hover:bg-[#3C3C3C] hover:text-white"
             >
