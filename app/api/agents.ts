@@ -89,7 +89,13 @@ export const agents: Record<string, AgentConfig> = {
     model: anthropic("claude-3-7-sonnet-20250219"),
     getTools: async () => {
       const braveClient = await createBraveWebSearchClient();
-      return await braveClient.tools();
+      const slackClient = await createSlackClient();
+      const combinedTools = {
+        ...(await braveClient.tools()),
+        ...(await slackClient.tools())
+      };
+
+      return combinedTools;
     },    
     maxSteps: 10,
     providerOptions: {
