@@ -39,3 +39,7 @@ artifacts/
 cache/
 typechain/
 typechain-types/
+
+
+zksync-deploy/**
+zkout/**
