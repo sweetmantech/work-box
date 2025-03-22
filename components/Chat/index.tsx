@@ -13,10 +13,25 @@ interface ChatInterfaceProps {
   departmentId: string;
 }
 
+interface MessagePart {
+  type: "text" | "reasoning";
+  text?: string;
+  details?: Array<{ type: string; text: string }>;
+}
+
+interface ChatMessage {
+  id: string;
+  role: "user" | "assistant";
+  content?: string;
+  parts?: MessagePart[];
+}
+
 export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+
+  const { messages, input, handleInputChange, handleSubmit, isLoading, error } =
+
     useChat({
       api: "/api/chat",
       body: {
@@ -40,8 +55,43 @@ export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
     inputRef.current?.focus();
   }, []);
 
+
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  };
+
+  // Render message content based on part type
+  const renderMessageContent = (message: ChatMessage) => {
+    if (!message.parts) {
+      // Handle legacy message format
+      return <div>{message.content}</div>;
+    }
+
+    return message.parts.map((part: MessagePart, index: number) => {
+      switch (part.type) {
+        case "text":
+          return <div key={`${message.id}-${index}`}>{part.text}</div>;
+        case "reasoning":
+          return (
+            <div
+              key={`${message.id}-${index}`}
+              className="text-sm bg-muted/30 rounded-lg p-2 mt-2 font-mono"
+            >
+              {part.details?.map((detail, detailIndex) => (
+                <div
+                  key={`${message.id}-${index}-${detailIndex}`}
+                  className="text-muted-foreground"
+                >
+                  {detail.type === "text" ? detail.text : "<redacted>"}
+                </div>
+              ))}
+            </div>
+          );
+        default:
+          return null;
+      }
+    });
+
   };
 
   return (
@@ -82,7 +132,7 @@ export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
                         : "bg-muted/50 text-foreground border border-border/50"
                     }`}
                   >
-                    {message.content}
+                    {renderMessageContent(message as ChatMessage)}
                   </div>
                   <span className="text-xs text-muted-foreground mt-1 px-2">
                     {formatTime(new Date())}
@@ -109,6 +159,13 @@ export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          )}
+          {error && (
+            <div className="flex justify-center">
+              <div className="text-sm text-red-500 bg-red-50 rounded-lg px-4 py-2">
+                {error.message}
               </div>
             </div>
           )}
