@@ -34,9 +34,11 @@ export async function getAllTools() {
   const braveWebSearchMcpClient = await createBraveWebSearchClient();
   const slackMcpClient = await createSlackClient();
   const mantleMcpClient = await createMantleClient();
+
   const toolSetWebSearch = await braveWebSearchMcpClient.tools();
   const toolSetSlack = await slackMcpClient.tools();
-  const toolSetMantle = await mantleMcpClient.tools();  
+  const toolSetMantle = await mantleMcpClient.tools();
+
   return {
     ...toolSetWebSearch,
     ...toolSetSlack,
