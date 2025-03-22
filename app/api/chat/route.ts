@@ -1,4 +1,3 @@
-
 import { anthropic } from "@ai-sdk/anthropic";
 import { experimental_createMCPClient, streamText } from "ai";
 
@@ -8,7 +7,7 @@ export async function POST(req: Request) {
   const braveWebSearchMcpClient = await experimental_createMCPClient({
     transport: {
       type: "sse",
-      url: "https://router.mcp.so/sse/bs1hevm8kn8t98",
+      url: "https://router.mcp.so/sse/a3w8qvm8kot4qz",
     },
   });
 
@@ -27,7 +26,6 @@ export async function POST(req: Request) {
   };
 
   const result = streamText({
-
     model: anthropic("claude-3-7-sonnet-20250219"),
     messages,
     providerOptions: {
@@ -36,7 +34,7 @@ export async function POST(req: Request) {
       },
     },
     tools,
-    maxSteps: 10,
+    maxSteps: 11,
   });
 
   return result.toDataStreamResponse({
