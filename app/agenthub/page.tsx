@@ -168,7 +168,7 @@ export default function AgentPicker() {
     <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen}>
       <div className="flex h-screen bg-background overflow-hidden">
         <Sidebar
-          variant="inset"
+          variant="floating"
           collapsible={isMobile ? "offcanvas" : "icon"}
         >
           <SidebarHeader>
