@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+// import { createClient } from "@/li/b/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,17 +11,17 @@ import { Label } from "@/components/ui/label";
 export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter();
-  const supabase = createClient();
+  // const router = useRouter();
+  // const supabase = createClient();
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const { error } = await supabase.auth.signUp({ email, password });
-    if (error) {
-      console.error("Error registering:", error.message);
-    } else {
-      router.push("/dashboard");
-    }
+  const handleRegister = async () => {
+    // e.preventDefault();
+    // const { error } = await supabase.auth.signUp({ email, password });
+    // if (error) {
+    //   console.error("Error registering:", error.message);
+    // } else {
+    //   router.push("/dashboard");
+    // }
   };
 
   return (

@@ -20,8 +20,8 @@ const HeroSection = () => {
           <p className="text-base text-[#CFCFCF] mb-8 max-w-2xl mx-auto lg:mx-0">
             Stop struggling with recruitment and team building. Black Box Team
             delivers a complete, ready-to-go team of elite professionals
-            tailored to your startup's needs. From developers to designers,
-            we're your instant dream team.
+            tailored to your startup&apos;s needs. From developers to designers,
+            we&apos;re your instant dream team.
           </p>
 
           <Link

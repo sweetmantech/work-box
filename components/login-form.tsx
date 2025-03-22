@@ -2,9 +2,9 @@
 import SEO from "@/utils/seo";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
+// import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,42 +12,42 @@ import { Label } from "@/components/ui/label";
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter();
-  const supabase = createClient();
+  // const router = useRouter();
+  // const supabase = createClient();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) {
-      console.error("Error logging in:", error.message);
-    } else {
-      router.push("/dashboard");
-    }
+    // const { error } = await supabase.auth.signInWithPassword({
+    //   email,
+    //   password,
+    // });
+    // if (error) {
+    //   console.error("Error logging in:", error.message);
+    // } else {
+    //   router.push("/dashboard");
+    // }
   };
 
   const handleMagicLink = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signInWithOtp({ email });
-    if (error) {
-      console.error("Error sending magic link:", error.message);
-    } else {
-      alert("Check your email for the magic link!");
-    }
+    // const { error } = await supabase.auth.signInWithOtp({ email });
+    // if (error) {
+    //   console.error("Error sending magic link:", error.message);
+    // } else {
+    //   alert("Check your email for the magic link!");
+    // }
   };
 
   const handleGoogleSignIn = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
-    if (error) {
-      console.error("Error signing in with Google:", error.message);
-    }
+    // const { error } = await supabase.auth.signInWithOAuth({
+    //   provider: "google",
+    //   options: {
+    //     redirectTo: `${window.location.origin}/auth/callback`,
+    //   },
+    // });
+    // if (error) {
+    //   console.error("Error signing in with Google:", error.message);
+    // }
   };
 
   return (
@@ -102,7 +102,7 @@ export default function LoginForm() {
           </Button>
         </div>
         <p className="text-center text-sm">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/auth/register" className="text-blue-500 hover:underline">
             Register
           </Link>
