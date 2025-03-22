@@ -1,12 +1,30 @@
-import { ConnectButton } from "./components/ConnectButton";
+import { Metadata } from "next";
+import CTA from "@/app/(site)/Cta";
+import FAQ from "@/app/(site)/Faq";
+import FeaturedTime from "@/app/(site)/FeaturedTime";
+import Footer from "@/app/(site)/Footer";
+import HeroSection from "@/app/(site)/Hero";
+import MakerIntro from "@/app/(site)/MakerIntro";
+import Navbar from "@/app/(site)/Navbar";
+import PricingSection from "@/app/(site)/pricing";
+import TestimonialsPage from "@/app/(site)/Testimonials";
+
+export const metadata: Metadata = {
+  title: "WorkBox",
+};
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-8">
-      <main className="flex flex-col items-center gap-8">
-        <h1 className="text-4xl font-bold">Welcome to Team in a Box</h1>
-        <ConnectButton />
-      </main>
-    </div>
+    <div className="bg-[#212121]">
+    <Navbar />
+    <HeroSection />
+    <FeaturedTime />
+    <MakerIntro />
+    <PricingSection />
+    <FAQ />
+    <TestimonialsPage />
+    <CTA />
+    <Footer />
+  </div>
   );
 }
