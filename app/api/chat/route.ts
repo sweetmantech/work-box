@@ -11,9 +11,19 @@ export async function POST(req: Request) {
       url: "https://router.mcp.so/sse/bs1hevm8kn8t98",
     },
   });
+
+  const slackMcpClient = await experimental_createMCPClient({
+    transport: {
+      type: "sse",
+      url: "https://router.mcp.so/sse/hrqwgum8knwq9f",
+    },
+  });
   const toolSetWebSearch = await braveWebSearchMcpClient.tools();
+  const toolSetSlack = await slackMcpClient.tools();
+
   const tools = {
     ...toolSetWebSearch,
+    ...toolSetSlack,
   };
 
   const result = streamText({
@@ -26,6 +36,7 @@ export async function POST(req: Request) {
       },
     },
     tools,
+    maxSteps: 10,
   });
 
   return result.toDataStreamResponse({
