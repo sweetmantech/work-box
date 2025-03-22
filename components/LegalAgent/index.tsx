@@ -24,7 +24,6 @@ import {
 } from "lucide-react";
 
 import { PayBlock } from "@/components/Pay";
-import { SignIn } from "@/components/SignIn";
 import { VerifyBlock } from "@/components/Verify";
 
 // Sample contract data
@@ -332,7 +331,7 @@ export default function ContractSigningModule() {
             <CardContent>
           
       <VerifyBlock />
-      <PayBlock />z
+      <PayBlock />
               <div className="text-center text-sm text-muted-foreground mb-4">
                 or
               </div>

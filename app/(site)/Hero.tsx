@@ -36,10 +36,12 @@ const HeroSection = () => {
             <div className="flex -space-x-1">
               {["agent.svg", "agent.svg", "agent.svg", "agent.svg"].map(
                 (avatar, index) => (
-                  <img
+                  <Image
                     key={index}
                     src={avatar}
                     alt={`Team Member ${index + 1}`}
+                    width={80}
+                    height={80}
                     className="w-8 sm:w-10 h-8 sm:h-10 rounded-full border-2 border-zinc-900"
                   />
                 )
