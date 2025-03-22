@@ -72,7 +72,7 @@ export default function FeaturedTime() {
         {/* Bottom arrow */}
         <div className="text-center text-gray-400">
           <div className="text-2xl mb-2">↓</div>
-          <p className="text-sm">There's an easier way</p>
+          <p className="text-sm">There&apos;s an easier way</p>
         </div>
       </div>
     </div>
