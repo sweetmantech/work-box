@@ -101,7 +101,7 @@ const departments = [
     icon: Clock,
     agents: [
       {
-        id: "contracts",
+        id: "contracts-agent",
         name: "Contract Drafting & Review",
         description:
           "Drafts contract clauses, highlights risks, and ensures compliance.",

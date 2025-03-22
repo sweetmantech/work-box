@@ -1,51 +1,31 @@
-import { anthropic } from "@ai-sdk/anthropic";
-import { experimental_createMCPClient, streamText } from "ai";
+import { streamText } from "ai";
+import { defaultAgent, getAgentById } from "../agents";
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  const { messages, agentId } = await req.json();
+  
+  const receivedAgent = getAgentById(agentId);
+  const agent = receivedAgent ?? defaultAgent;
 
-  const braveWebSearchMcpClient = await experimental_createMCPClient({
-    transport: {
-      type: "sse",
-      url: "https://router.mcp.so/sse/a3w8qvm8kot4qz",
-    },
-  });
+  if (!agent) {
+    return new Response(
+      JSON.stringify({ error: `Agent with ID "${agentId}" not found` }),
+      { status: 404, headers: { "Content-Type": "application/json" } }
+    );
+  }
 
-  const slackMcpClient = await experimental_createMCPClient({
-    transport: {
-      type: "sse",
-      url: "https://router.mcp.so/sse/hrqwgum8knwq9f",
-    },
-  });
-
-  const mantleMcpClient = await experimental_createMCPClient({
-    transport: {
-      type: "sse",
-      url: "https://onchain-beryl.vercel.app/sse",
-    },
-  });
-
-  const toolSetWebSearch = await braveWebSearchMcpClient.tools();
-  const toolSetSlack = await slackMcpClient.tools();
-  const toolSetMantle = await mantleMcpClient.tools();
-
-  const tools = {
-    ...toolSetWebSearch,
-    ...toolSetSlack,
-    ...toolSetMantle,
-  };
+  const tools = await agent.getTools();
 
   const result = streamText({
-    model: anthropic("claude-3-7-sonnet-20250219"),
+    model: agent.model,
     messages,
-    providerOptions: {
-      anthropic: {
-        thinking: { type: "enabled", budgetTokens: 12000 },
-      },
-    },
+    providerOptions: agent.providerOptions,
     tools,
-    maxSteps: 11,
+    maxSteps: agent.maxSteps,
     toolCallStreaming: true,
+    ...(agent.systemPrompt && { 
+      system: agent.systemPrompt 
+    }),
   });
 
   return result.toDataStreamResponse({
