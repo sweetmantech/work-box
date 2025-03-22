@@ -1,0 +1,21 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+remappings = [
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+    "@matterlabs/=src/interfaces/"
+]
+solc = "0.8.20"
+
+[rpc_endpoints]
+zksync_sepolia = "${ZKSYNC_TESTNET_URL}"
+
+# zkSync era testnet
+[etherscan]
+zksync_sepolia = { key = "${ETHERSCAN_API_KEY}" }
+
+[fmt]
+line_length = 120
+tab_width = 4
+bracket_spacing = true 
