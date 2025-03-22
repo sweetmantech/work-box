@@ -1,9 +1,20 @@
 
 import { anthropic } from "@ai-sdk/anthropic";
-import { streamText } from "ai";
+import { experimental_createMCPClient, streamText } from "ai";
 
 export async function POST(req: Request) {
   const { messages } = await req.json();
+
+  const braveWebSearchMcpClient = await experimental_createMCPClient({
+    transport: {
+      type: "sse",
+      url: "https://router.mcp.so/sse/bs1hevm8kn8t98",
+    },
+  });
+  const toolSetWebSearch = await braveWebSearchMcpClient.tools();
+  const tools = {
+    ...toolSetWebSearch,
+  };
 
   const result = streamText({
 
@@ -14,6 +25,7 @@ export async function POST(req: Request) {
         thinking: { type: "enabled", budgetTokens: 12000 },
       },
     },
+    tools,
   });
 
   return result.toDataStreamResponse({
