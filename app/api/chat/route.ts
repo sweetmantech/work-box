@@ -17,12 +17,22 @@ export async function POST(req: Request) {
       url: "https://router.mcp.so/sse/hrqwgum8knwq9f",
     },
   });
+
+  const mantleMcpClient = await experimental_createMCPClient({
+    transport: {
+      type: "sse",
+      url: "https://onchain-beryl.vercel.app/sse",
+    },
+  });
+
   const toolSetWebSearch = await braveWebSearchMcpClient.tools();
   const toolSetSlack = await slackMcpClient.tools();
+  const toolSetMantle = await mantleMcpClient.tools();
 
   const tools = {
     ...toolSetWebSearch,
     ...toolSetSlack,
+    ...toolSetMantle,
   };
 
   const result = streamText({
