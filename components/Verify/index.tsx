@@ -69,7 +69,7 @@ export const VerifyBlock = () => {
 
   return (
     <div>
-      <h1>Verify Block</h1>
+      <h1>VERIFY </h1>
       <button className="bg-green-500 p-4" onClick={handleVerify}>
         Test Verify
       </button>

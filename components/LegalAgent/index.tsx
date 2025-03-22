@@ -22,8 +22,10 @@ import {
   Download,
   Share2,
 } from "lucide-react";
-import { VerifyBlock } from "@/components/Verify";
 
+import { PayBlock } from "@/components/Pay";
+import { SignIn } from "@/components/SignIn";
+import { VerifyBlock } from "@/components/Verify";
 
 // Sample contract data
 const contractData = {
@@ -326,18 +328,11 @@ export default function ContractSigningModule() {
           <Card className="w-full max-w-md">
             <CardHeader>
               <CardTitle>Sign Document</CardTitle>
-              <CardDescription>
-                Draw your signature below or type your name to create a
-                signature.
-              </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="border-2 border-dashed border-muted-foreground/20 rounded-md h-40 flex items-center justify-center mb-4">
-                <div className="text-center text-muted-foreground">
-                  <PenTool className="h-8 w-8 mx-auto mb-2" />
-                  <p>Draw your signature here</p>
-                </div>
-              </div>
+          
+      <VerifyBlock />
+      <PayBlock />z
               <div className="text-center text-sm text-muted-foreground mb-4">
                 or
               </div>
