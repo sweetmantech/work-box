@@ -22,6 +22,8 @@ import {
   Download,
   Share2,
 } from "lucide-react";
+import { VerifyBlock } from "@/components/Verify";
+
 
 // Sample contract data
 const contractData = {
