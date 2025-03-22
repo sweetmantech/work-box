@@ -4,8 +4,9 @@ import { defaultAgent, getAgentById } from "../agents";
 export async function POST(req: Request) {
   const { messages, agentId } = await req.json();
   
-  const agent = agentId ? getAgentById(agentId) : defaultAgent;
-  
+  const receivedAgent = getAgentById(agentId);
+  const agent = receivedAgent ?? defaultAgent;
+
   if (!agent) {
     return new Response(
       JSON.stringify({ error: `Agent with ID "${agentId}" not found` }),
