@@ -55,8 +55,14 @@ export default function Navbar() {
           >
             Agent Hub
           </Link>
-          <Link
+       {/*    <Link
             href="/agents"
+            className="text-base text-white/90 transition hover:text-white"
+          >
+            Agents
+          </Link> */}
+          <Link
+            href="/agenthub"
             className="text-base text-white/90 transition hover:text-white"
           >
             Agents
