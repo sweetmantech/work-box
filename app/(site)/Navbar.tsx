@@ -137,6 +137,14 @@ export default function Navbar() {
             >
               Wall of love
             </Link>
+
+            <Link
+            href="/agenthub"
+            className="block rounded-md px-3 py-2 text-base font-medium text-white/90 hover:bg-[#3C3C3C] hover:text-white"
+            onClick={toggleMenu}
+          >
+            Agent Hub
+          </Link>
             <button
               onClick={() => {
                 handleLogin();

@@ -39,8 +39,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 // Define departments and their agents
 const departments = [
   {
-    id: "hr",
-    name: "HR",
+    id: "ops",
+    name: "Operations", 
     icon: Users,
     agents: [
       {
@@ -200,7 +200,7 @@ export default function AgentPicker() {
           </SidebarContent>
           <SidebarFooter>
             <div className="px-4 py-3 text-xs text-muted-foreground">
-              © 2025 Your Company
+              © 2025 ALEPH
             </div>
           </SidebarFooter>
         </Sidebar>
