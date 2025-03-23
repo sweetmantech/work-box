@@ -37,16 +37,16 @@ declare const CreateAgreementParameters_base: _goat_sdk_core.ToolParametersStati
     milestoneDealines: z.ZodArray<z.ZodString, "many">;
     value: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    contractAddress: string;
     value: string;
+    contractAddress: string;
     serviceProvider: string;
     termsHash: string;
     milestoneDescriptions: string[];
     milestoneAmounts: string[];
     milestoneDealines: string[];
 }, {
-    contractAddress: string;
     value: string;
+    contractAddress: string;
     serviceProvider: string;
     termsHash: string;
     milestoneDescriptions: string[];
