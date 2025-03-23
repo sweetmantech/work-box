@@ -6,8 +6,6 @@ import { privateKeyToAccount } from "viem/accounts";
 import { PEPE, USDC, erc20 } from "@goat-sdk/plugin-erc20";
 import { zksyncSepoliaTestnet } from "viem/chains";
 import { agreementFactory } from "../../lib/plugins/agreement-factory";
-import { sendETH } from "@goat-sdk/wallet-evm";
-
 
 // Function to create a Brave Web Search MCP client
 export async function createBraveWebSearchClient() {
@@ -52,7 +50,6 @@ export async function createOnchainClient() {
   });
 
   const plugins = [
-    sendETH(),
     erc20({ tokens: [USDC, PEPE] }),
     agreementFactory({
       contractAddress: process.env.ZKSYNC_AGREEMENT_ADDRESS as `0x${string}`
