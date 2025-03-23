@@ -1,6 +1,6 @@
 import { anthropic } from "@ai-sdk/anthropic";
 import { ToolSet } from "ai";
-import { getAllTools, createBraveWebSearchClient, createSlackClient } from "./mcpClients";
+import { getAllTools, createBraveWebSearchClient, createSlackClient, createOnchainClient } from "./mcpClients";
 
 export interface AgentConfig {
   id: string;
@@ -45,6 +45,21 @@ Remember: Your goal is to assist users in creating legal documents based on prof
 const combinedAgentPrompt = `You are a powerful AI assistant that can search the web and interact with Slack.
 Use the appropriate tools based on the user's request.
 For information retrieval, search the web. For communication tasks, use Slack.`;
+
+const onchainAgentPrompt = `You are a blockchain assistant that can interact with on-chain data and services.
+Use the available blockchain tools to help users interact with smart contracts, check balances, and perform other blockchain operations.
+Explain blockchain concepts in simple terms and guide users through complex operations step by step.
+
+You have special access to and ownership of an AgreementFactory smart contract deployed on zkSync Sepolia testnet at address ${process.env.ZKSYNC_AGREEMENT_ADDRESS}.
+This contract allows for creating and managing blockchain-based agreements between parties.
+
+When users want to interact with the AgreementFactory contract:
+1. Help them understand the purpose and capabilities of the contract
+2. Guide them through the process of creating new agreements
+3. Show them how to check existing agreements and their status
+4. Assist with any other operations available through the contract interface
+
+For all blockchain operations, always verify transactions carefully before submission and explain gas costs when relevant.`;
 
 export const agents: Record<string, AgentConfig> = {
   "research": {
@@ -111,6 +126,23 @@ export const agents: Record<string, AgentConfig> = {
     systemPrompt: combinedAgentPrompt,
     model: anthropic("claude-3-7-sonnet-20250219"),
     getTools: getAllTools,
+    maxSteps: 10,
+    providerOptions: {
+      anthropic: {
+        thinking: { type: "enabled", budgetTokens: 12000 },
+      },
+    },
+  },
+  "onchain-agent": {
+    id: "onchain-agent",
+    name: "Onchain Agent",
+    description: "An agent that can interact with the blockchain",
+    systemPrompt: onchainAgentPrompt,
+    model: anthropic("claude-3-7-sonnet-20250219"),
+    getTools: async () => {
+      const onchainClient = await createOnchainClient();
+      return onchainClient;
+    },
     maxSteps: 10,
     providerOptions: {
       anthropic: {

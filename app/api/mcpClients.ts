@@ -1,4 +1,10 @@
 import { experimental_createMCPClient } from "ai";
+import { getOnChainTools } from "@goat-sdk/adapter-vercel-ai";
+import { viem } from "@goat-sdk/wallet-viem";
+import { createWalletClient, http } from "viem";
+import { privateKeyToAccount } from "viem/accounts";
+import { zksyncSepoliaTestnet } from "viem/chains";
+import { agreementFactory } from "../../lib/plugins/agreement-factory";
 
 // Function to create a Brave Web Search MCP client
 export async function createBraveWebSearchClient() {
@@ -29,19 +35,45 @@ export async function createMantleClient() {
   });
 }
 
+export async function createOnchainClient() {
+  if (!process.env.WALLET_PRIVATE_KEY) {
+    throw new Error("WALLET_PRIVATE_KEY environment variable is required");
+  }
+
+  const account = privateKeyToAccount(process.env.WALLET_PRIVATE_KEY as `0x${string}`);
+
+  const walletClient = createWalletClient({
+      account: account,
+      transport: http(process.env.RPC_PROVIDER_URL),
+      chain: zksyncSepoliaTestnet,
+  });
+
+  // const plugins = [
+  //   agreementFactory({ 
+  //     contractAddress: process.env.ZKSYNC_AGREEMENT_ADDRESS as `0x${string}`
+  //   })
+  // ];
+
+  return await getOnChainTools({
+    wallet: viem(walletClient),
+    // plugins
+  });
+}
 // Helper function to get all tools
 export async function getAllTools() {
   const braveWebSearchMcpClient = await createBraveWebSearchClient();
   const slackMcpClient = await createSlackClient();
   const mantleMcpClient = await createMantleClient();
+  const onchainMcpClient = await createOnchainClient();
 
   const toolSetWebSearch = await braveWebSearchMcpClient.tools();
   const toolSetSlack = await slackMcpClient.tools();
   const toolSetMantle = await mantleMcpClient.tools();
-
+  const toolSetOnchain = onchainMcpClient;
   return {
     ...toolSetWebSearch,
     ...toolSetSlack,
     ...toolSetMantle,
+    ...toolSetOnchain,
   };
 } 
