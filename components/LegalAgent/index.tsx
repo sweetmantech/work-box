@@ -26,7 +26,6 @@ import {
 import { PayBlock } from "@/components/Pay";
 import { VerifyBlock } from "@/components/Verify";
 import { useContractStore } from "@/store/contract";
-import { supabase } from "@/lib/supabase/client";
 
 // Sample contract data
 const _contractData = (contract: string) => ({

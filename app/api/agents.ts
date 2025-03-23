@@ -1,6 +1,7 @@
 import { anthropic } from "@ai-sdk/anthropic";
 import { ToolSet } from "ai";
 import { getAllTools, createBraveWebSearchClient, createSlackClient, createOnchainClient } from "./mcpClients";
+
 export interface AgentConfig {
   id: string;
   name: string;
@@ -161,8 +162,8 @@ export const agents: Record<string, AgentConfig> = {
       },
     },
   },
-  "onchain-agent": {
-    id: "onchain-agent",
+  "web3-agent": {
+    id: "web3-agent",
     name: "Onchain Agent",
     description: "An agent that can interact with the blockchain",
     systemPrompt: onchainAgentPrompt,
