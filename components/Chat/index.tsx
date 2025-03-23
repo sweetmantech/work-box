@@ -1,12 +1,13 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { SendHorizontal, Paperclip, Smile } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useContractStore } from "@/store/contract";
 
 interface ChatInterfaceProps {
   agentId: string;
@@ -28,10 +29,14 @@ interface ChatMessage {
 
 export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
+  const [localContract, setLocalContract] = useState<string | null>(null);
+  
+  // Use the Zustand store
+  const { setContract, contract } = useContractStore();
+  console.log({contract})
   const { messages, input, handleInputChange, handleSubmit, isLoading, error } =
-
     useChat({
       api: "/api/chat",
       body: {
@@ -48,8 +53,58 @@ export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
     });
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    // Scroll to bottom when new messages arrive
+    if (messagesEndRef.current && scrollContainerRef.current) {
+      const scrollContainer = scrollContainerRef.current;
+      const isUserScrolledUp = 
+        scrollContainer.scrollHeight - scrollContainer.clientHeight - 
+        scrollContainer.scrollTop > 100;
+      
+      // If user hasn't scrolled up significantly, auto-scroll to bottom
+      if (!isUserScrolledUp) {
+        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   }, [messages]);
+
+  // Check for contract when new messages arrive
+  useEffect(() => {
+    if (messages.length > 0) {
+      const lastMessage = messages[messages.length - 1];
+      
+      // Check in content field
+      if (
+        lastMessage.role === "assistant" && 
+        typeof lastMessage.content === "string" && 
+        lastMessage.content.includes("CONTRACT BEGINS HERE:")
+      ) {
+        const contractText = lastMessage.content.split("CONTRACT BEGINS HERE:")[1].trim();
+        setLocalContract(contractText);
+        console.log("Contract detected in content:", contractText);
+      }
+      
+      // Also check in message parts if available
+      const typedMessage = lastMessage as ChatMessage;
+      if (typedMessage.parts) {
+        for (const part of typedMessage.parts) {
+          if (part.type === "text" && part.text && part.text.includes("CONTRACT BEGINS HERE:")) {
+            const contractText = part.text.split("CONTRACT BEGINS HERE:")[1].trim();
+            setLocalContract(contractText);
+            console.log("Contract detected in parts:", contractText);
+            break;
+          }
+        }
+      }
+    }
+  }, [messages]);
+
+  // Update Zustand store when streaming is complete and we have a contract
+  useEffect(() => {
+    if (!isLoading && localContract) {
+      setContract(localContract);
+      console.log("Streaming complete, contract uploaded to store:", localContract);
+    }
+  }, [isLoading, localContract, setContract]);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -96,80 +151,96 @@ export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
 
   return (
     <Card className="flex flex-col h-full border-muted shadow-sm">
-      <CardContent className="flex-1 overflow-y-auto p-4 pt-6">
-        <div className="space-y-6">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${
-                message.role === "user" ? "justify-end" : "justify-start"
-              }`}
-            >
+      <CardContent className="flex-1 overflow-hidden p-0">
+        <div 
+          ref={scrollContainerRef}
+          className="h-full overflow-y-auto px-4 pt-6 pb-4" 
+          style={{ 
+            maxHeight: "calc(100vh - 140px)" 
+          }}
+        >
+          {localContract && (
+            <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+              <h3 className="text-sm font-medium text-green-800 mb-1">Contract Detected</h3>
+              <p className="text-xs text-green-700">
+                Contract content stored ({localContract.length > 50 ? `${localContract.substring(0, 50)}...` : localContract})
+              </p>
+            </div>
+          )}
+          <div className="space-y-6">
+            {messages.map((message) => (
               <div
-                className={`flex gap-3 max-w-[85%] ${
-                  message.role === "user" ? "flex-row-reverse" : ""
+                key={message.id}
+                className={`flex ${
+                  message.role === "user" ? "justify-end" : "justify-start"
                 }`}
               >
-                <Avatar
-                  className={
-                    message.role === "user" ? "bg-primary" : "bg-muted"
-                  }
+                <div
+                  className={`flex gap-3 max-w-[85%] ${
+                    message.role === "user" ? "flex-row-reverse" : ""
+                  }`}
                 >
-                  {message.role === "user" ? (
-                    <AvatarFallback>U</AvatarFallback>
-                  ) : (
+                  <Avatar
+                    className={
+                      message.role === "user" ? "bg-primary" : "bg-muted"
+                    }
+                  >
+                    {message.role === "user" ? (
+                      <AvatarFallback>U</AvatarFallback>
+                    ) : (
+                      <AvatarImage
+                        src={`/placeholder.svg?height=40&width=40`}
+                        alt="Agent"
+                      />
+                    )}
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <div
+                      className={`rounded-2xl p-4 ${
+                        message.role === "user"
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted/50 text-foreground border border-border/50"
+                      }`}
+                    >
+                      {renderMessageContent(message as ChatMessage)}
+                    </div>
+                    <span className="text-xs text-muted-foreground mt-1 px-2">
+                      {formatTime(new Date())}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="flex gap-3 max-w-[85%]">
+                  <Avatar className="bg-muted">
                     <AvatarImage
                       src={`/placeholder.svg?height=40&width=40`}
                       alt="Agent"
                     />
-                  )}
-                </Avatar>
-                <div className="flex flex-col">
-                  <div
-                    className={`rounded-2xl p-4 ${
-                      message.role === "user"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted/50 text-foreground border border-border/50"
-                    }`}
-                  >
-                    {renderMessageContent(message as ChatMessage)}
-                  </div>
-                  <span className="text-xs text-muted-foreground mt-1 px-2">
-                    {formatTime(new Date())}
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-          {isLoading && (
-            <div className="flex justify-start">
-              <div className="flex gap-3 max-w-[85%]">
-                <Avatar className="bg-muted">
-                  <AvatarImage
-                    src={`/placeholder.svg?height=40&width=40`}
-                    alt="Agent"
-                  />
-                </Avatar>
-                <div className="flex flex-col">
-                  <div className="rounded-2xl p-4 bg-muted/50 text-foreground border border-border/50">
-                    <div className="flex gap-1">
-                      <div className="h-2 w-2 rounded-full bg-current animate-bounce [animation-delay:-0.3s]"></div>
-                      <div className="h-2 w-2 rounded-full bg-current animate-bounce [animation-delay:-0.15s]"></div>
-                      <div className="h-2 w-2 rounded-full bg-current animate-bounce"></div>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <div className="rounded-2xl p-4 bg-muted/50 text-foreground border border-border/50">
+                      <div className="flex gap-1">
+                        <div className="h-2 w-2 rounded-full bg-current animate-bounce [animation-delay:-0.3s]"></div>
+                        <div className="h-2 w-2 rounded-full bg-current animate-bounce [animation-delay:-0.15s]"></div>
+                        <div className="h-2 w-2 rounded-full bg-current animate-bounce"></div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-          {error && (
-            <div className="flex justify-center">
-              <div className="text-sm text-red-500 bg-red-50 rounded-lg px-4 py-2">
-                {error.message}
+            )}
+            {error && (
+              <div className="flex justify-center">
+                <div className="text-sm text-red-500 bg-red-50 rounded-lg px-4 py-2">
+                  {error.message}
+                </div>
               </div>
-            </div>
-          )}
-          <div ref={messagesEndRef} />
+            )}
+            <div ref={messagesEndRef} />
+          </div>
         </div>
       </CardContent>
       <CardFooter className="border-t p-4">

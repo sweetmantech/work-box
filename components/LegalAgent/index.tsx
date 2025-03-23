@@ -25,9 +25,10 @@ import {
 
 import { PayBlock } from "@/components/Pay";
 import { VerifyBlock } from "@/components/Verify";
+import { useContractStore } from "@/store/contract";
 
 // Sample contract data
-const contractData = {
+const _contractData = (contract: string) => ({
   id: "CON-2025-04-15-001",
   title: "Software Development Agreement",
   createdAt: "April 15, 2025",
@@ -71,70 +72,16 @@ const contractData = {
     },
   ],
   content: `
-    <h1>SOFTWARE DEVELOPMENT AGREEMENT</h1>
-    
-    <p>This Software Development Agreement (the "Agreement") is entered into as of April 15, 2025 (the "Effective Date") by and between:</p>
-    
-    <p><strong>Acme Corporation</strong>, a corporation organized and existing under the laws of Delaware, with its principal place of business at 123 Main Street, Metropolis, DE 19801 ("Client")</p>
-    
-    <p>and</p>
-    
-    <p><strong>TechSolutions Inc.</strong>, a corporation organized and existing under the laws of California, with its principal place of business at 456 Tech Avenue, Silicon Valley, CA 94025 ("Developer")</p>
-    
-    <h2>1. SCOPE OF WORK</h2>
-    
-    <p>1.1 Developer agrees to design, develop, and implement software according to the specifications set forth in Exhibit A (the "Software").</p>
-    
-    <p>1.2 Any modifications to the scope of work must be agreed upon in writing by both parties.</p>
-    
-    <h2>2. TIMELINE AND MILESTONES</h2>
-    
-    <p>2.1 Developer shall complete the development of the Software according to the timeline set forth in Exhibit B.</p>
-    
-    <p>2.2 Client acknowledges that timely delivery is dependent upon Client's prompt provision of materials, feedback, and approvals.</p>
-    
-    <h2>3. COMPENSATION</h2>
-    
-    <p>3.1 Client agrees to pay Developer the sum of $150,000 for the development of the Software.</p>
-    
-    <p>3.2 Payment shall be made according to the schedule set forth in Exhibit C.</p>
-    
-    <h2>4. INTELLECTUAL PROPERTY RIGHTS</h2>
-    
-    <p>4.1 Upon receipt of full payment, Developer assigns to Client all rights, title, and interest in the Software.</p>
-    
-    <p>4.2 Developer retains ownership of pre-existing development tools and components.</p>
-    
-    <h2>5. CONFIDENTIALITY</h2>
-    
-    <p>5.1 Both parties agree to maintain the confidentiality of any proprietary information disclosed during the project.</p>
-    
-    <h2>6. WARRANTIES</h2>
-    
-    <p>6.1 Developer warrants that the Software will substantially conform to the specifications for a period of 90 days after delivery.</p>
-    
-    <h2>7. LIMITATION OF LIABILITY</h2>
-    
-    <p>7.1 Developer's liability shall not exceed the total amount paid by Client under this Agreement.</p>
-    
-    <h2>8. TERM AND TERMINATION</h2>
-    
-    <p>8.1 This Agreement shall remain in effect until completion of the Services, unless terminated earlier.</p>
-    
-    <h2>9. GOVERNING LAW</h2>
-    
-    <p>9.1 This Agreement shall be governed by the laws of the State of Delaware.</p>
-    
-    <h2>10. SIGNATURES</h2>
-    
-    <p>IN WITNESS WHEREOF, the parties have executed this Agreement as of the Effective Date.</p>
+  ${contract}
   `,
-};
+});
 
 export default function ContractSigningModule() {
   const [activeTab, setActiveTab] = useState("contract");
   const [showSignatureModal, setShowSignatureModal] = useState(false);
+  const { contract } = useContractStore();
 
+  const contractData = _contractData(contract || '');
   // Calculate overall contract status
   const signedCount = contractData.parties.filter(
     (party) => party.status === "signed"
@@ -256,7 +203,7 @@ export default function ContractSigningModule() {
           <Card>
             <CardContent className="p-6">
               <div
-                className="prose max-w-none"
+                className="prose max-w-none h-[500px] overflow-y-auto border rounded-md p-4"
                 dangerouslySetInnerHTML={{ __html: contractData.content }}
               />
             </CardContent>

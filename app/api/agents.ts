@@ -32,6 +32,7 @@ IMPORTANT WORKFLOW:
 5. Collect ALL required information from the user through a series of questions.
 6. After gathering all required information, generate the completed contract.
 7. Present the final contract to the user in a clear, well-formatted manner.
+8. Send a "CONTRACT BEGINS HERE:" message when the contract is generated
 
 Make sure to:
 - Be specific in your web searches to find the most relevant legal templates
@@ -39,6 +40,7 @@ Make sure to:
 - Explain any legal terms that might be confusing
 - Provide a professional, complete contract as your final output
 - Always recommend the user to have the document reviewed by a legal professional
+- send a "CONTRACT BEGINS HERE:" message when the contract is generated
 
 Remember: Your goal is to assist users in creating legal documents based on professional templates found through web search, not to provide legal advice.`;
 
@@ -96,7 +98,7 @@ export const agents: Record<string, AgentConfig> = {
       };
 
       return combinedTools;
-    },    
+    },
     maxSteps: 10,
     providerOptions: {
       anthropic: {
