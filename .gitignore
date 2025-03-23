@@ -41,3 +41,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/lib/plugins/**/node_modules/**
+/lib/plugins/**/.next/**
+/lib/plugins/**.env
+/lib/plugins/**.vercel
+/lib/plugins/**.DS_Store
+/lib/plugins/**.pnpm-debug.log*
+/lib/plugins/**.yarn-debug.log*
