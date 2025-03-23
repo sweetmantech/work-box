@@ -1,6 +1,6 @@
 import { anthropic } from "@ai-sdk/anthropic";
 import { ToolSet } from "ai";
-import { getAllTools, createBraveWebSearchClient, createSlackClient } from "./mcpClients";
+import { getAllTools, createBraveWebSearchClient, createSlackClient, getWeb3Tools } from "./mcpClients";
 
 export interface AgentConfig {
   id: string;
@@ -43,6 +43,16 @@ Make sure to:
 - send a "CONTRACT BEGINS HERE:" message when the contract is generated
 
 Remember: Your goal is to assist users in creating legal documents based on professional templates found through web search, not to provide legal advice.`;
+
+const web3AgentPrompt = `You are a helpful AI assistant that can interact with the web3.
+You can send messages, search messages, and more using the web3 tools.
+Be concise and helpful in your responses.
+
+also, we deployed this contract on zksync sepolia: 0x4D09Df02d3Ab9566258300F316Ccd760C5a9EbE4
+
+it has a deployAgreementPair function that allows you to deploy a new agreement pair, this is the function signature:
+"function deployAgreementPair(uint256 minGasToComplete) public returns (address paymaster, address serviceAgreement)",
+`;
 
 const combinedAgentPrompt = `You are a powerful AI assistant that can search the web and interact with Slack.
 Use the appropriate tools based on the user's request.
@@ -98,6 +108,23 @@ export const agents: Record<string, AgentConfig> = {
       };
 
       return combinedTools;
+    },
+    maxSteps: 10,
+    providerOptions: {
+      anthropic: {
+        thinking: { type: "enabled", budgetTokens: 12000 },
+      },
+    },
+  },
+  "web3-agent": {
+    id: "web3-agent",
+    name: "Web3 Agent",
+    description: "An agent that can interact with the web3",
+    systemPrompt: web3AgentPrompt,
+    model: anthropic("claude-3-7-sonnet-20250219"),
+    getTools: async () => {
+      const web3Tools = await getWeb3Tools();
+      return web3Tools;
     },
     maxSteps: 10,
     providerOptions: {

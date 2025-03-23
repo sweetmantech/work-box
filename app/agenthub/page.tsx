@@ -64,10 +64,10 @@ const departments = [
     icon: FileText,
     agents: [
       {
-        id: "expenses",
-        name: "Expense Approvals",
+        id: "web3-agent",
+        name: "ZkSync Agent",
         description:
-          "Reviews expense submissions, flags policy violations, and streamlines approvals.",
+          "Interact with the ZkSync network to send ETH, ERC20 tokens, and more.",
       },
       {
         id: "forecasting",

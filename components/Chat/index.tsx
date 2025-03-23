@@ -33,9 +33,8 @@ export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [localContract, setLocalContract] = useState<string | null>(null);
   
-  // Use the Zustand store
-  const { setContract, contract } = useContractStore();
-  console.log({contract})
+  const { setContract } = useContractStore();
+
   const { messages, input, handleInputChange, handleSubmit, isLoading, error } =
     useChat({
       api: "/api/chat",
@@ -287,6 +286,3 @@ export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
     </Card>
   );
 }
-
-
-// si es agent id legal , guarda la respuesta si la respuesta es un markdown , convierte 
