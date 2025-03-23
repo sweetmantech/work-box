@@ -11,7 +11,7 @@ import {
   Menu,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { MiniKit, WalletAuthInput } from '@worldcoin/minikit-js'
+// import { MiniKit, WalletAuthInput } from '@worldcoin/minikit-js'
 import {
   Card,
   CardDescription,
