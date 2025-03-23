@@ -199,33 +199,33 @@ export default function ContractSigningModule() {
 
   
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-h-[calc(100vh-2rem)] overflow-y-auto px-4 py-6 md:px-6">
       {/* Contract Header */}
       <Card className="border-muted shadow-sm">
         <CardHeader className="pb-4">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <CardTitle className="text-2xl">{contractData.title}</CardTitle>
+            <div className="min-w-0">
+              <CardTitle className="text-xl md:text-2xl truncate">{contractData.title}</CardTitle>
               <CardDescription className="flex items-center gap-2 mt-1">
-                <FileText className="h-4 w-4" />
-                Contract ID: {contractData.id}
+                <FileText className="h-4 w-4 flex-shrink-0" />
+                <span className="truncate">Contract ID: {contractData.id}</span>
               </CardDescription>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <Button variant="outline" className="flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 flex-shrink-0">
+              <Button variant="outline" className="flex items-center gap-2 text-sm">
                 <Download className="h-4 w-4" />
-                Download
+                <span className="sm:inline">Download</span>
               </Button>
-              <Button variant="outline" className="flex items-center gap-2">
+              <Button variant="outline" className="flex items-center gap-2 text-sm">
                 <Share2 className="h-4 w-4" />
-                Share
+                <span className=" sm:inline">Share</span>
               </Button>
               <Button
                 className="flex items-center gap-2"
                 onClick={() => setShowSignatureModal(true)}
               >
                 <PenTool className="h-4 w-4" />
-                Sign Document
+                <span className=" sm:inline">Sign Document</span>
               </Button>
             </div>
           </div>
@@ -266,7 +266,7 @@ export default function ContractSigningModule() {
         onValueChange={setActiveTab}
         className="w-full"
       >
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-2 sticky top-0 z-10 bg-background">
           <TabsTrigger value="contract">Contract Details</TabsTrigger>
           <TabsTrigger value="signatories">
             Signatories ({signedCount}/{totalParties})
@@ -275,9 +275,9 @@ export default function ContractSigningModule() {
 
         <TabsContent value="contract" className="mt-4">
           <Card>
-            <CardContent className="p-6">
+            <CardContent className="p-4 md:p-6">
               <div
-                className="prose max-w-none h-[500px] overflow-y-auto border rounded-md p-4"
+                className="prose max-w-none h-[calc(100vh-20rem)] overflow-y-auto border rounded-md p-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
                 dangerouslySetInnerHTML={{ __html: contractData.content }}
               />
             </CardContent>
@@ -286,35 +286,35 @@ export default function ContractSigningModule() {
 
         <TabsContent value="signatories" className="mt-4">
           <Card>
-            <CardHeader>
-              <CardTitle>Contract Signatories</CardTitle>
+            <CardHeader className="space-y-2">
+              <CardTitle className="text-xl">Contract Signatories</CardTitle>
               <CardDescription>
                 All parties must sign this document for it to be fully executed.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {contractData.parties.map((party) => (
                   <div
                     key={party.id}
-                    className="flex items-center justify-between p-4 rounded-lg border border-border/50 bg-card"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-3 md:p-4 rounded-lg border border-border/50 bg-card gap-3"
                   >
-                    <div className="flex items-center gap-4">
-                      <Avatar>
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-8 w-8 md:h-10 md:w-10">
                         <AvatarImage src={party.avatar} alt={party.name} />
                         <AvatarFallback>{party.name.charAt(0)}</AvatarFallback>
                       </Avatar>
-                      <div>
-                        <div className="font-medium">{party.name}</div>
-                        <div className="text-sm text-muted-foreground">
+                      <div className="min-w-0">
+                        <div className="font-medium truncate">{party.name}</div>
+                        <div className="text-sm text-muted-foreground truncate">
                           {party.role}
                         </div>
-                        <div className="text-xs text-muted-foreground">
+                        <div className="text-xs text-muted-foreground truncate">
                           {party.email}
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-col items-end gap-2">
+                    <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2 ml-11 sm:ml-0">
                       {getStatusBadge(party.status)}
                       {party.signedAt && (
                         <div className="text-xs text-muted-foreground">
@@ -326,14 +326,18 @@ export default function ContractSigningModule() {
                 ))}
               </div>
             </CardContent>
-            <CardFooter className="flex justify-end gap-2 border-t">
+            <CardFooter className="flex flex-col sm:flex-row justify-end gap-2 border-t p-4">
               <Button
                 variant="outline"
                 onClick={() => setActiveTab("contract")}
+                className="w-full sm:w-auto"
               >
                 View Contract
               </Button>
-              <Button onClick={() => setShowSignatureModal(true)}>
+              <Button 
+                onClick={() => setShowSignatureModal(true)}
+                className="w-full sm:w-auto"
+              >
                 <PenTool className="h-4 w-4 mr-2" />
                 Sign Document
               </Button>
@@ -344,8 +348,10 @@ export default function ContractSigningModule() {
 
       {/* Signature Modal */}
       {showSignatureModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <VerifyBlock setShowSignatureModal={setShowSignatureModal} />
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="w-full max-w-lg">
+            <VerifyBlock setShowSignatureModal={setShowSignatureModal} />
+          </div>
         </div>
       )}
     </div>

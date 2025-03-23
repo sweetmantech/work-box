@@ -10,8 +10,7 @@ import { useCallback, useState } from "react";
 import toast, { Toaster } from 'react-hot-toast';
 
 import { supabase } from '@/lib/supabase/client';
-import { useUserStore } from '@/store/user';
-import { useContractStore } from '@/store/contract';
+
 export type VerifyCommandInput = {
   action: string;
   signal?: string;
@@ -24,23 +23,6 @@ const verifyPayload: VerifyCommandInput = {
   verification_level: VerificationLevel.Orb, // Orb | Device
 };
 
-const setContract = async (contract: any, wallet: string | null) => {
-  const { data, error } = await supabase
-      .from('contracts')
-      .insert({
-        owner_wallet: wallet,
-        content: contract?.content,
-      })
-      .select()
-      .single();
-
-      if (error) {
-        console.error('Error fetching contract', error);
-      } else {
-      return data;
-      }
-
-}
    
 const notify = () => toast('Contract signed successfully');
 
@@ -55,7 +37,7 @@ export const VerifyBlock = ({ setShowSignatureModal }: VerifyBlockProps) => {
     MiniAppVerifyActionErrorPayload | IVerifyResponse | null
   >(null);
   const [isLoading, setIsLoading] = useState(false);
-const {contract} = useContractStore();
+
   const handleVerify = useCallback(async () => {
     if (!MiniKit.isInstalled()) {
       console.warn("Tried to invoke 'verify', but MiniKit is not installed.");
@@ -94,11 +76,6 @@ const {contract} = useContractStore();
         console.log(finalPayload);
         setShowSignatureModal(false);
         /* setWallet(MiniKit?.user?.walletAddress || null); */
-        await setContract(contract, MiniKit?.user?.walletAddress || null); 
-       
-        useUserStore.getState().setUser({ wallet: verifyResponseJson.user.wallet });
-        // Handle redirect
-        window.location.href = verifyResponseJson.redirect;
       }
 
       setHandleVerifyResponse(verifyResponseJson);
