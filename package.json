@@ -37,6 +37,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "eruda": "^3.4.1",
+    "hardhat": "^2.22.19",
     "lucide-react": "^0.483.0",
     "next": "15.2.3",
     "puppeteer": "^24.4.0",
