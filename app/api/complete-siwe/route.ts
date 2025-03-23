@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import { MiniAppWalletAuthSuccessPayload, verifySiweMessage } from '@worldcoin/minikit-js'
-import { createUser } from '../users/route'  // Import the shared createUser function
+import { createUser } from '../users/createUser'  // Import the shared createUser function
 
 interface IRequestPayload {
 	payload: MiniAppWalletAuthSuccessPayload
