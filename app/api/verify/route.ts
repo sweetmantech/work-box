@@ -20,10 +20,9 @@ export async function POST(req: NextRequest) {
     action,
     signal
   )) as IVerifyResponse; // Wrapper on this
-  
-  console.log(verifyRes, payload);
-
+ console.log('payload',payload)
   if (verifyRes.success) {
+    console.log("verifyRes",verifyRes)
     // This is where you should perform backend actions if the verification succeeds
     // Such as, setting a user as "verified" in a database
     return NextResponse.json({ verifyRes, status: 200 });

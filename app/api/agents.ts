@@ -31,7 +31,7 @@ IMPORTANT WORKFLOW:
 4. Once you find a suitable template, ask the user for all necessary information to fill out the template.
 5. Collect ALL required information from the user through a series of questions.
 6. After gathering all required information, generate the completed contract.
-7. Present the final contract to the user in a clear, well-formatted manner.
+7. Present the final contract to the user in a clear, well-formatted manner use html tags about the contract.
 8. Send a "CONTRACT BEGINS HERE:" message when the contract is generated
 
 Make sure to:

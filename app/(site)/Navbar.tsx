@@ -5,6 +5,7 @@ import { Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import { signInWithWallet } from "@/components/ConnectWorldButton";
+import{WalletAuth }from "@/components/Login"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -77,12 +78,9 @@ export default function Navbar() {
         </div>
 
         <div className="hidden items-center gap-2 md:flex">
-          <button
-            onClick={handleLogin}
-            className="flex items-center gap-2 rounded-md bg-[#2C2C2C] px-4 py-2 text-sm text-white/90 transition hover:bg-[#31a8a0]"
-          >
-            {authenticated ? "Dashboard" : "Login"}
-          </button>
+   
+              <WalletAuth />
+       
         </div>
 
         <div className="flex md:hidden">
@@ -146,9 +144,12 @@ export default function Navbar() {
           >
             Agent Hub
           </Link>
+
+
+           
             <button
               onClick={() => {
-                signInWithWallet();
+              signInWithWallet();
                 /* toggleMenu(); */
               }}
               className="w-full text-left block rounded-md px-3 py-2 text-base font-medium text-white/90 hover:bg-[#3C3C3C] hover:text-white"

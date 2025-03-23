@@ -7,7 +7,8 @@ import {
   IVerifyResponse,
 } from "@worldcoin/minikit-js";
 import { useCallback, useState } from "react";
-
+import { supabase } from '@/lib/supabase/client';
+import { useUserStore } from '@/store/user';
 export type VerifyCommandInput = {
   action: string;
   signal?: string;
@@ -25,6 +26,8 @@ export const VerifyBlock = () => {
     MiniAppVerifyActionErrorPayload | IVerifyResponse | null
   >(null);
   const [isLoading, setIsLoading] = useState(false);
+const user = useUserStore()
+
 
   const handleVerify = useCallback(async () => {
     if (!MiniKit.isInstalled()) {
@@ -62,9 +65,13 @@ export const VerifyBlock = () => {
     // TODO: Handle Success!
     const verifyResponseJson = await verifyResponse.json();
 
+
+
     if (verifyResponseJson.status === 200) {
       console.log("Verification success!");
       console.log(finalPayload);
+
+
     }
 
     setHandleVerifyResponse(verifyResponseJson);

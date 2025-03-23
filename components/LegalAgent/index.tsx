@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+
+import { MiniKit, WalletAuthInput } from "@worldcoin/minikit-js";
+import { useState, useCallback, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -26,6 +28,22 @@ import {
 import { PayBlock } from "@/components/Pay";
 import { VerifyBlock } from "@/components/Verify";
 import { useContractStore } from "@/store/contract";
+import { supabase } from "@/lib/supabase/client";
+import { useUserStore } from '@/store/user';
+
+
+
+interface User {
+  walletAddress: string | null;
+  username: string | null;
+  profilePictureUrl: string | null;
+}
+
+// Fix the walletAuthInput function
+const walletAuthInput = (nonce: string): WalletAuthInput => ({
+  nonce,
+  statement: "Sign in with your wallet",
+});
 
 // Sample contract data
 const _contractData = (contract: string) => ({
@@ -36,40 +54,32 @@ const _contractData = (contract: string) => ({
   parties: [
     {
       id: "party-1",
-      name: "Acme Corporation",
-      role: "Client",
+      name: "ALEXIS",
+      role: "Dev",
       status: "signed",
       signedAt: "April 15, 2025",
-      email: "legal@acmecorp.com",
+      email: "0xf30f83dbecb5fb8422c5eb8892f1e07395f36503",
       avatar: "/placeholder.svg?height=40&width=40",
     },
     {
       id: "party-2",
-      name: "TechSolutions Inc.",
-      role: "Service Provider",
+      name: "Luca ",
+      role: "Marketing",
       status: "signed",
       signedAt: "April 16, 2025",
-      email: "contracts@techsolutions.com",
+      email: "0x6691f84d3f7af86f4702d9901f6d3bc9f6ec65dc",
       avatar: "/placeholder.svg?height=40&width=40",
     },
     {
       id: "party-3",
-      name: "John Smith",
+      name: "Dagger",
       role: "Project Manager",
       status: "pending",
       signedAt: null,
-      email: "john.smith@techsolutions.com",
+      email: "0x29676a7670fefee3d0111c19c5b5c06d6cb1bad7",
       avatar: "/placeholder.svg?height=40&width=40",
     },
-    {
-      id: "party-4",
-      name: "Legal Department",
-      role: "Compliance Officer",
-      status: "pending",
-      signedAt: null,
-      email: "compliance@acmecorp.com",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
+   
   ],
   content: `
   ${contract}
@@ -124,6 +134,75 @@ export default function ContractSigningModule() {
     }
   };
 
+
+
+  const { wallet, setUser } = useUserStore();
+
+  console.log('user on legal agent',wallet)
+
+/*   useEffect(() => {
+    const initWallet = async () => {
+      if (!MiniKit.isInstalled()) {
+        console.warn('Tried to invoke "walletAuth", but MiniKit is not installed.')
+        return;
+      }
+
+      const res = await fetch(`/api/nonce`)
+      const { nonce } = await res.json()
+
+      const { commandPayload: generateMessageResult, finalPayload } = await MiniKit.commandsAsync.walletAuth(walletAuthInput(nonce))
+
+      if (finalPayload.status === 'error') {
+        return
+      } else {
+        const response = await fetch('/api/complete-siwe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            payload: finalPayload,
+            nonce,
+          }),
+        })
+
+        if (response.status === 200) {
+          setUser(MiniKit.user)
+        }
+      }
+    }
+
+    initWallet();
+  }, []); */ // Empty dependency array means this runs once on mount
+
+/* 
+  useEffect(() => {
+    const storeUser = async () => {
+      if (MiniKit.isInstalled() && MiniKit.user?.walletAddress) {
+        // Set user in local state
+        const userData = {
+          walletAddress: MiniKit.user.walletAddress,
+          username: MiniKit.user.username,
+          profilePictureUrl: MiniKit.user.profilePictureUrl
+        };
+        setUser(userData);
+
+    
+          
+
+      }
+    };
+
+    storeUser();
+  }, []);
+ */
+
+  const handleSignOut = useCallback(() => {
+    setUser(null);
+  }, []);
+
+
+  
   return (
     <div className="space-y-6">
       {/* Contract Header */}
@@ -271,45 +350,11 @@ export default function ContractSigningModule() {
       {/* Signature Modal */}
       {showSignatureModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <Card className="w-full max-w-md">
-            <CardHeader>
-              <CardTitle>Sign Document</CardTitle>
-            </CardHeader>
-            <CardContent>
+          
           
       <VerifyBlock />
       <PayBlock />
-              <div className="text-center text-sm text-muted-foreground mb-4">
-                or
-              </div>
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 gap-2">
-                  <label
-                    htmlFor="typed-signature"
-                    className="text-sm font-medium"
-                  >
-                    Type your name
-                  </label>
-                  <input
-                    id="typed-signature"
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    placeholder="Your full name"
-                  />
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex justify-between border-t">
-              <Button
-                variant="outline"
-                onClick={() => setShowSignatureModal(false)}
-              >
-                Cancel
-              </Button>
-              <Button onClick={() => setShowSignatureModal(false)}>
-                Apply Signature
-              </Button>
-            </CardFooter>
-          </Card>
+       
         </div>
       )}
     </div>

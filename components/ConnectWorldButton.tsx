@@ -30,7 +30,7 @@ export const signInWithWallet = async () => {
 			}),
 		})
 
-
+console.log('payload',finalPayload)
 
 		
 	}
