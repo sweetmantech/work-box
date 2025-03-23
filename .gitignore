@@ -49,3 +49,9 @@ next-env.d.ts
 /lib/plugins/**.DS_Store
 /lib/plugins/**.pnpm-debug.log*
 /lib/plugins/**.yarn-debug.log*
+
+contracts-v1/broadcast/**
+contracts-v1/cache/**
+contracts-v1/out/**
+contracts-v1/zkout/**
+contracts-v1/zksync-deploy/**
