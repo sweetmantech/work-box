@@ -13,7 +13,7 @@ export class AgreementFactoryService {
     @Tool({
         description: "Deploy agreement service contract pair in order to follow provider agreements",
     })
-    async deployAgreementPair(walletClient: EVMWalletClient, parameters: DeployAgreementPairParameters) {
+    async deployAgreementPair(parameters: DeployAgreementPairParameters, walletClient: EVMWalletClient) {
         try {
             const hash = await walletClient.sendTransaction({
                 to: this.contractAddress,
