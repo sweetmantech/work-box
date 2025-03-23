@@ -11,6 +11,7 @@ import {
   Menu,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { MiniKit, WalletAuthInput } from '@worldcoin/minikit-js'
 import {
   Card,
   CardDescription,
@@ -121,7 +122,7 @@ const departments = [
     agents: [
       {
         id: "signing",
-        name: "Contract Signing",
+        name: " NDA Signing",
         description: "Digital contract signing with multi-party verification.",
       },
     ],
