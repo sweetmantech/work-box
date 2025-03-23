@@ -63,10 +63,10 @@ export default function Navbar() {
             Agents
           </Link> */}
           <Link
-            href="/agenthub"
+            href="/projects"
             className="text-base text-white/90 transition hover:text-white"
           >
-            Agents
+            Projects
           </Link>
           <Link
             href="#wall-of-love"
