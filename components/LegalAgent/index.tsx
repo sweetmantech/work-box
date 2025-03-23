@@ -345,11 +345,7 @@ export default function ContractSigningModule() {
       {/* Signature Modal */}
       {showSignatureModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          
-          
-      <VerifyBlock />
-     
-       
+          <VerifyBlock setShowSignatureModal={setShowSignatureModal} />
         </div>
       )}
     </div>

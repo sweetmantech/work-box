@@ -43,7 +43,14 @@ const setContract = async (contract: any, wallet: string | null) => {
 }
    
 const notify = () => toast('Contract signed successfully');
-export const VerifyBlock = () => {
+
+
+interface VerifyBlockProps {
+  setShowSignatureModal: (show: boolean) => void;
+}
+
+
+export const VerifyBlock = ({ setShowSignatureModal }: VerifyBlockProps) => {
   const [handleVerifyResponse, setHandleVerifyResponse] = useState<
     MiniAppVerifyActionErrorPayload | IVerifyResponse | null
   >(null);
@@ -85,6 +92,7 @@ const {contract} = useContractStore();
         notify();
         console.log("Verification success!");
         console.log(finalPayload);
+        setShowSignatureModal(false);
         /* setWallet(MiniKit?.user?.walletAddress || null); */
         await setContract(contract, MiniKit?.user?.walletAddress || null); 
        

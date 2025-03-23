@@ -46,9 +46,9 @@ const departments = [
     agents: [
       {
         id: "onboarding",
-        name: "Employee Onboarding/Offboarding",
+        name: "BUSINESS OPERATIONS ",
         description:
-          "Handles new hire data collection, policy checks, and offboarding tasks.",
+          "Handles business operations with slack and internet search.",
       },
       {
         id: "performance",
