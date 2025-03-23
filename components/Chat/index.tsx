@@ -216,3 +216,6 @@ export default function Chat({ agentId, departmentId }: ChatInterfaceProps) {
     </Card>
   );
 }
+
+
+// si es agent id legal , guarda la respuesta si la respuesta es un markdown , convierte 

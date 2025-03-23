@@ -16,8 +16,6 @@ export default function Navbar() {
 
   const handleLogin = () => {
     if (ready && !authenticated) {
-   
-
       signInWithWallet();
     }
   };
