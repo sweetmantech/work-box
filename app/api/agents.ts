@@ -1,7 +1,6 @@
 import { anthropic } from "@ai-sdk/anthropic";
 import { ToolSet } from "ai";
 import { getAllTools, createBraveWebSearchClient, createSlackClient, createOnchainClient } from "./mcpClients";
-
 export interface AgentConfig {
   id: string;
   name: string;

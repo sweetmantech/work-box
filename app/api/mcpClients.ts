@@ -5,6 +5,8 @@ import { createWalletClient, http } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { zksyncSepoliaTestnet } from "viem/chains";
 import { agreementFactory } from "../../lib/plugins/agreement-factory";
+import { sendETH } from "@goat-sdk/wallet-evm";
+
 
 // Function to create a Brave Web Search MCP client
 export async function createBraveWebSearchClient() {
@@ -48,15 +50,16 @@ export async function createOnchainClient() {
       chain: zksyncSepoliaTestnet,
   });
 
-  // const plugins = [
-  //   agreementFactory({ 
-  //     contractAddress: process.env.ZKSYNC_AGREEMENT_ADDRESS as `0x${string}`
-  //   })
-  // ];
+  const plugins = [
+    sendETH(),
+    agreementFactory({
+      contractAddress: process.env.ZKSYNC_AGREEMENT_ADDRESS as `0x${string}`
+    })
+  ];
 
   return await getOnChainTools({
     wallet: viem(walletClient),
-    // plugins
+    plugins
   });
 }
 // Helper function to get all tools

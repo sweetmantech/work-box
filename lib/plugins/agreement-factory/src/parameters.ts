@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export class DeployAgreementPairParameters extends createToolParameters(
     z.object({
-        minGasToComplete: z.string().optional().describe("The minimum gas required for transactions in the paymaster").default("10000"),
+        minGasToComplete: z.string().describe("The minimum gas required for transactions in the paymaster").default("10000"),
     }),
 ) {}
 

@@ -10,8 +10,8 @@ declare const DeployAgreementPairParameters_base: _goat_sdk_core.ToolParametersS
     minGasToComplete: string;
     walletClient?: any;
 }, {
-    minGasToComplete?: string | undefined;
     walletClient?: any;
+    minGasToComplete?: string | undefined;
 }>>;
 declare class DeployAgreementPairParameters extends DeployAgreementPairParameters_base {
 }
