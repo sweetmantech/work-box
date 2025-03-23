@@ -29,8 +29,9 @@ export const signInWithWallet = async () => {
 				nonce,
 			}),
 		})
-
-console.log('payload',finalPayload)
+if (response.status === 200) {
+  window.location.href = '/agenthub'
+}
 
 		
 	}

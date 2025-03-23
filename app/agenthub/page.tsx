@@ -167,7 +167,7 @@ export default function AgentPicker() {
 
   return (
     <SidebarProvider open={sidebarOpen} onOpenChange={setSidebarOpen}>
-      <div className="flex h-screen bg-background overflow-hidden">
+      <div className="flex min-h-screen bg-background">
         <Sidebar
           variant="floating"
           collapsible={isMobile ? "offcanvas" : "icon"}
@@ -206,8 +206,8 @@ export default function AgentPicker() {
           </SidebarFooter>
         </Sidebar>
 
-        <div className={`flex-1 flex flex-col overflow-hidden ${!isMobile && sidebarOpen ? "ml-[var(--sidebar-width)]" : ""}`}>
-          <header className="border-b bg-card p-4 flex items-center justify-between">
+        <div className={`flex-1 flex flex-col ${!isMobile && sidebarOpen ? "ml-[var(--sidebar-width)]" : ""}`}>
+          <header className="border-b bg-card p-4 flex items-center justify-between sticky top-0 z-10">
             <div className="flex items-center gap-2">
               {isMobile && <SidebarTrigger className="mr-2" />}
               <h1 className="text-xl font-semibold">
@@ -221,7 +221,7 @@ export default function AgentPicker() {
             </div>
           </header>
 
-          <main className="flex-1  p-8 md:p-6">
+          <main className="flex-1 overflow-y-auto p-4 md:p-6">
             {!selectedAgent ? (
               <div className="space-y-6 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-8">

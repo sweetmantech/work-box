@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     console.log("verifyRes",verifyRes)
     // This is where you should perform backend actions if the verification succeeds
     // Such as, setting a user as "verified" in a database
-    return NextResponse.json({ verifyRes, status: 200 });
+    return NextResponse.json({ payload, verifyRes, status: 200 });
   } else {
     // This is where you should handle errors from the World ID /verify endpoint.
     // Usually these errors are due to a user having already verified.

@@ -28,8 +28,7 @@ import {
 import { PayBlock } from "@/components/Pay";
 import { VerifyBlock } from "@/components/Verify";
 import { useContractStore } from "@/store/contract";
-import { supabase } from "@/lib/supabase/client";
-import { useUserStore } from '@/store/user';
+
 
 
 
@@ -136,9 +135,8 @@ export default function ContractSigningModule() {
 
 
 
-  const { wallet, setUser } = useUserStore();
 
-  console.log('user on legal agent',wallet)
+
 
 /*   useEffect(() => {
     const initWallet = async () => {
@@ -197,9 +195,6 @@ export default function ContractSigningModule() {
   }, []);
  */
 
-  const handleSignOut = useCallback(() => {
-    setUser(null);
-  }, []);
 
 
   
@@ -353,7 +348,7 @@ export default function ContractSigningModule() {
           
           
       <VerifyBlock />
-      <PayBlock />
+     
        
         </div>
       )}
