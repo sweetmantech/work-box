@@ -8,7 +8,7 @@ declare class AgreementFactoryService {
     constructor({ contractAddress }: {
         contractAddress: `0x${string}`;
     });
-    deployAgreementPair(walletClient: EVMWalletClient, parameters: DeployAgreementPairParameters): Promise<{
+    deployAgreementPair(parameters: DeployAgreementPairParameters, walletClient: EVMWalletClient): Promise<{
         transactionHash: string;
         message: string;
     }>;
