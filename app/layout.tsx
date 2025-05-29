@@ -33,12 +33,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body className={cn(inter.className, "antialiased")}>
         <PrivyAuthProvider>
           <ErudaWrapper>
             <MiniKitProvider>
-            <Toaster/>
+         
               {children}
             </MiniKitProvider>
           </ErudaWrapper>
